@@ -50,8 +50,18 @@ CharacterStats.prototype.takeDamage = function(){
   return `${this.name} took damage.`
 }
 
-Object.assign(CharacterStats.prototype, GameObject.prototype);
+CharacterStats.prototype.attack = function(points, obj){
+  if (this.healthPoints < 0) {
+    return `You already died`;
+  }
+  if (obj.healthPoints < 0) {
+    return `${obj.name} already died, you can leave him`;
+  }
+  obj.healthPoints -= points;
+  return  obj.healthPoints > 0 ? `${obj.name}: Health -> ${obj.healthPoints}` : `He died, you win! yay`;
+}
 
+Object.assign(CharacterStats.prototype, GameObject.prototype);
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
@@ -151,10 +161,68 @@ Object.assign(Humanoid.prototype, CharacterStats.prototype);
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-
   console.log(mage)
   //console.log(mage.constructor)
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
-  // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
+  // * Give the Hero and Villains different methods that could be used to remove health points from objects 
+  // * which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  function Villain(args){
+    Humanoid.call(this, args);
+  }
+
+  Villain.prototype = Object.create(Humanoid.prototype);
+  function Hero(args) {
+    Humanoid.call(this, args);
+  }
+
+  Hero.prototype = Object.create(Humanoid.prototype);
+
+  const thanos = new Humanoid({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 1,
+      height: 1,
+    },
+    healthPoints: 5,
+    name: 'Thanos',
+    team: 'Thanos',
+    weapons: [
+      'Chasquido',
+    ],
+    language: 'Common Tongue',
+  });
+
+  const spiderman = new Humanoid({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 1,
+      height: 1,
+    },
+    healthPoints: 5,
+    name: 'Spiderman',
+    team: 'Avengers',
+    weapons: [
+      'spider',
+    ],
+    language: 'Common Tongue',
+  });
+
+  console.log(spiderman.healthPoints)
+  console.log(spiderman.attack(1, thanos))
+  console.log(spiderman.attack(1, thanos))
+  console.log(spiderman.attack(1, thanos))
+  console.log(spiderman.attack(1, thanos))
+  console.log(thanos.attack(1, spiderman))
+  console.log(thanos.attack(1, spiderman))
+  console.log(thanos.attack(1, spiderman))
+  console.log(thanos.attack(1, spiderman))
+  // console.log(thanos.attack(1, spiderman))
+  // console.log(thanos.attack(1, spiderman))
+  console.log(spiderman.attack(1, thanos))
+  console.log(spiderman.attack(1, thanos))
+  console.log(spiderman.attack(1, thanos))
