@@ -48,3 +48,21 @@ is_my_bf.getJob();
 // Principle 4
 
 // code example for Explicit Binding
+
+function Greeter(){
+    return(`Hello -> ${this.name} <- Welcome to Lambda!`)
+}
+
+const alejandro = {
+    name: "Alejandro"
+}
+
+const rick = {
+    name: "Rick"
+}
+
+const greetAlejandro = Greeter.bind(alejandro);
+
+console.log(Greeter.call(alejandro));
+console.log(Greeter.apply(rick));
+console.log(greetAlejandro()) // Binding it
